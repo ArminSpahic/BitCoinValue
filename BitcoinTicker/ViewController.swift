@@ -13,7 +13,9 @@ import SwiftyJSON
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     let baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
+    let currencySign = ["$", "R$", "$", "¥", "€", "£", "$", "Rp", "₪", "₹", "¥", "$", "kr", "$", "zł", "lei", "₽", "kr", "$", "$", "R"]
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
+    var currencySelected = ""
     var finalURL = ""
 
     //Pre-setup IBOutlets
@@ -45,6 +47,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         finalURL = baseURL + currencyArray[row]
         print(finalURL)
         getBitCoinData(url: finalURL)
+        currencySelected = currencySign[row]
     }
     
     
@@ -66,7 +69,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     func updateBitCoinData(json : JSON) {
         if let bitCoinResult = json["ask"].double {
            let bitCoinPrice = String(bitCoinResult)
-            self.bitcoinPriceLabel.text = bitCoinPrice
+            self.bitcoinPriceLabel.text =  currencySelected + " " + bitCoinPrice
+        } else {
+            self.bitcoinPriceLabel.text = "Price unavailable"
         }
         
     }
@@ -78,21 +83,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 //    
 //    
 //    
-//    //MARK: - JSON Parsing
-//    /***************************************************************/
-//    
-//    func updateWeatherData(json : JSON) {
-//        
-//        if let tempResult = json["main"]["temp"].double {
-//        
-//        weatherData.temperature = Int(round(tempResult!) - 273.15)
-//        weatherData.city = json["name"].stringValue
-//        weatherData.condition = json["weather"][0]["id"].intValue
-//        weatherData.weatherIconName =    weatherData.updateWeatherIcon(condition: weatherData.condition)
-//        }
-//        
-//        updateUIWithWeatherData()
-//    }
+//
 //    
 
 
